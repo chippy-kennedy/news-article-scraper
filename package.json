@@ -1,0 +1,29 @@
+{
+  "name": "news-article-scraper",
+  "version": "1.0.0",
+  "description": "a simple web scraper to pull, parse, and store news website article metadata",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chippy-kennedy/news-article-scraper.git"
+  },
+  "keywords": [
+    "web",
+    "scraper",
+    "scraper",
+    "node.js",
+    "news",
+    "articles",
+    "data",
+    "science"
+  ],
+  "author": "Chip Kennedy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chippy-kennedy/news-article-scraper/issues"
+  },
+  "homepage": "https://github.com/chippy-kennedy/news-article-scraper#readme"
+}
