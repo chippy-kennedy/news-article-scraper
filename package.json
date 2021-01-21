@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/chippy-kennedy/news-article-scraper/issues"
   },
-  "homepage": "https://github.com/chippy-kennedy/news-article-scraper#readme"
+  "homepage": "https://github.com/chippy-kennedy/news-article-scraper#readme",
+  "dependencies": {
+    "apify": "^0.22.4"
+  }
 }
