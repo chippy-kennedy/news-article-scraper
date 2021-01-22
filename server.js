@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const url = require("url");
 const axios = require('axios');
+const fs = require('fs');
 const {updateItemCategory} = require('./data-labeler')
 
 app.use(express.json());
@@ -27,7 +28,7 @@ app.post('/scale-task-completed', (req, res) => {
 
 		// Write Data to File
 		let output = JSON.stringify(dataset);
-		fs.writeFileSync('./dataset-examples/example-raw-dataset-25', output);
+		fs.writeFileSync('./dataset-examples/example-raw-dataset-25.json', output);
 	}
 
 	res.writeHead(200, { 'Content-Type': 'application/json' });

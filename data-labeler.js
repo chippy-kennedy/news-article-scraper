@@ -35,7 +35,7 @@ const requestDatasetCategories = async (dataset) => {
 
 	// Write Data to File
 	let output = JSON.stringify(dataset);
-	fs.writeFileSync('./dataset-examples/example-raw-dataset-25', output);
+	fs.writeFileSync('./dataset-examples/example-raw-dataset-25.json', output);
 }
 
 const requestItemCategory = (item) => {
