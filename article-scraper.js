@@ -1,7 +1,7 @@
+require('dotenv').config()
 const axios = require('axios').default;
 const cliProgress = require('cli-progress');
 const startUrls = require('./sites.json');
-require('dotenv').config()
 
 const scrape = async () => {
 	const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.legacy);

@@ -1,0 +1,16 @@
+{
+	"status": "EMPTY",
+	"created_at": "2021-01-22T17:45:46.568Z",
+	"updated_at": "2021-01-22T17:45:46.568Z",
+	"id": 1,
+	"name": "example-empty-dataset",
+	"itemType": "articles",
+	"itemCount": 0,
+	"itemCleanedCount": 0,
+	"itemSentForLabelingCount": 0,
+	"itemLabelCount": 0,
+	"spaceURI": null,
+	"scaleProjectName": null,
+	"apifyRun": null,
+	"items": []
+}

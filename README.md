@@ -30,14 +30,17 @@ The article scraper service pulls material from news websites. This content is o
 - Apify API Key (raw dataset creation // web scraping)
 - Scale API Key (training dataset creation // ML pre-labeling + human review)
 
+### Costs
+Note that both Apify and Scale AI have both free tiers and paid subscriptions. Create accounts with those services to learn more.
+
 ### How it Works
-The scraper is really three seperate services to gather data (web scraping via apify), store data (in a cloud storage space), and label the data (via scale AI).
+The scraper is made up of three seperate services and a web server to gather data (web scraping via apify), store data (in a cloud storage space), and label the data (via scale AI).
 
 #### 🪛  Article Scraper Service
 The article scraper service uses a pre-made actor in the apify cloud marketplace. If you're new to apify, start with [their docs](https://docs.apify.com/). Once you're familiar, you can read up on the [Smart Article Extractor actor](https://apify.com/lukaskrivka/article-extractor-smart) that
 powers the service.
 **Input**
-- list of news websites (*required*)
+- list of news websites to crawl (*required*)
 - actor options (*optional*)
 
 **Output**
@@ -50,8 +53,20 @@ The dataset storage service packages, labels, and stores datasets in the cloud.
 
 #### 🏷 Dataset Labeling Service
 The dataset labeling service uses the [scale api](https://docs.scale.com/reference) to turn raw datasets into useful ML training data. It specifically labels scraped articles with topics and subtopics defined in this service.
+It also uses a simple webserver to handle individual task callbacks from scale's service.
 **Input**
 - raw dataset
 
 **Output**
 - labeled dataset
+
+## Data Structures
+### The Dataset Object
+The dataset object is a json object that contains metadata and all items of a given dataset.
+
+It has a `status`, which can be:
+- `EMPTY`, meaning the dataset is newly created and has no items
+- `PROCESSING`, meaning the dataset is having some service augment or modify it
+- `RAW`, meaning the dataset has items, but has had no cleaning or labeling done to it
+- `CLEANED`, meaning the dataset has been cleaned (manual process)
+- `LABELED`, meaning the dataset is labeled

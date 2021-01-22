@@ -1,0 +1,147 @@
+[
+	{
+		"choice": "Arts & Culture",
+		"subchoices": [
+			"Cultural Institutions",
+			"Libraries",
+			"Parks & Recreation",
+			"Public Art"
+		]
+	},
+	{
+		"choice": "Criminal Justice & Public Safety",
+		"subchoices": [
+			"Corrections",
+			"Defense",
+			"Emergency Management",
+			"International Security",
+			"Juvenile Justice",
+			"Law & Legal Institutions",
+			"Law Enforcement",
+			"Legal Services",
+			"National Security",
+			"School Violence"
+		]
+	},
+	{
+		"choice": "Economic Development",
+		"subchoices": [
+			"Business Incentives",
+			"Community Development",
+			"Employment",
+			"Entrepreneurship",
+			"Food & Agriculture",
+			"Housing",
+			"Job Training",
+			"Poverty",
+			"Public-Private Partnerships",
+			"Trade",
+			"Urban Planning"
+		]
+	},
+	{
+		"choice": "Education",
+		"subchoices": [
+			"Alternative Education",
+			"Continuing Education",
+			"Higher Education",
+			"Preschool Education",
+			"Primary Education",
+			"School Administration",
+			"Secondary Education",
+			"Special Needs",
+			"Teacher Recruitment & Training",
+			"Vocational Education"
+		]
+	},
+	{
+		"choice": "Environment",
+		"subchoices": [
+			"Air Quality",
+			"Clean Water",
+			"Climate Change",
+			"Conservation",
+			"Environmental Regulation",
+			"Land Use",
+			"Natural Resources",
+			"Sustainability",
+			"Waste Management"
+		]
+	},
+	{
+		"choice": "Finance",
+		"subchoices": [
+			"Banking",
+			"Microfinance",
+			"Pensions",
+			"Public Finance",
+			"Taxation"
+		]
+	},
+	{
+		"choice": "Governance & Politics",
+		"subchoices": [
+			"Accountability",
+			"Civic Engagement & Participation",
+			"Civil Rights",
+			"Collaboration",
+			"Competitions & Games",
+			"Corruption",
+			"Democratization",
+			"Diversity",
+			"Electoral Politics",
+			"Migration & Immigration",
+			"Privacy",
+			"Privatization",
+			"Social Innovation",
+			"Social Justice",
+			"Transparency"
+		]
+	},
+	{
+		"choice": "Health & Human Services",
+		"subchoices": [
+			"Access to Services",
+			"Elderly & Long-Term Care",
+			"Homelessness",
+			"Mental Health",
+			"Public Assistance",
+			"Public Health",
+			"Social Services",
+			"Substance Abuse",
+			"Violence Interventions"
+		]
+	},
+	{
+		"choice": "Infrastructure",
+		"subchoices": [
+			"Energy",
+			"Sanitation",
+			"Transportation",
+			"Water"
+		]
+	},
+	{
+		"choice": "Public Management",
+		"subchoices": [
+			"Crisis Leadership",
+			"Human Resources",
+			"Labor Relations",
+			"Leadership",
+			"Performance Management",
+			"Procurement",
+			"Shared Services",
+			"Veterans Services"
+		]
+	},
+	{
+		"choice": "Technology",
+		"subchoices": [
+			"Communications Networks",
+			"Crowdsourcing",
+			"Data Analytics",
+			"Data Security",
+			"Online Government Services"
+		]
+	}
+]

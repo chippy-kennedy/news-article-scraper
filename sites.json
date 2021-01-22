@@ -2,7 +2,7 @@
 	{
 		"url": "https://us.cnn.com/",
 		"method": "GET"
-	}
+	},
 	{
 		"url": "https://www.nytimes.com/",
 		"method": "GET"
