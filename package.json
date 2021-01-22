@@ -4,21 +4,22 @@
   "description": "a simple web scraper to pull, parse, and store news website article metadata",
   "main": "main.js",
   "scripts": {
-    "test": "test"
+		"scrape": "node -e 'require(\"./article-scraper\").scrape()'",
+    "store": "node dataset-storage.js",
+    "label": "node data-labeler.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chippy-kennedy/news-article-scraper.git"
   },
   "keywords": [
-    "web",
-    "scraper",
+    "web-scraper",
+    "apify",
     "scraper",
     "node.js",
     "news",
     "articles",
-    "data",
-    "science"
+    "data-science"
   ],
   "author": "Chip Kennedy",
   "license": "ISC",
@@ -27,6 +28,13 @@
   },
   "homepage": "https://github.com/chippy-kennedy/news-article-scraper#readme",
   "dependencies": {
-    "apify": "^0.22.4"
+    "apify": "^0.22.4",
+    "axios": "^0.21.1",
+    "cli-progress": "^3.8.2",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   }
 }

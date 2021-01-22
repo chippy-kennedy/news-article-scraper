@@ -1,0 +1,42 @@
+[
+	{
+		"url": "https://us.cnn.com/",
+		"method": "GET"
+	}
+	{
+		"url": "https://www.nytimes.com/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.huffpost.com/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.foxnews.com/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.usatoday.com/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.reuters.com/news/us",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.politico.com/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.yahoo.com/news/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.npr.org/",
+		"method": "GET"
+	},
+	{
+		"url": "https://www.latimes.com/",
+		"method": "GET"
+	}
+]
