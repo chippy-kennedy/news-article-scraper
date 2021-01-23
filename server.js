@@ -9,7 +9,6 @@ const {updateItemCategory} = require('./data-labeler')
 app.use(express.json());
 
 app.post('/scale-task-completed', (req, res) => {
-	console.log(req.body)
 	//TODO: find dataset based on ID, for now use local hardcode
 	let dataset_id = req.body.task.metadata.dataset_id
 	let dataset = fs.readFileSync('./dataset-examples/example-raw-dataset-25.json')
@@ -18,12 +17,12 @@ app.post('/scale-task-completed', (req, res) => {
 	if(dataset){
 		let task_id = req.body.task.task_id
 		let category = req.body.task.response.taxonomies.category[0]
+		let item = dataset.items.find(item => item.scale_task_id == task_id)
 
-		if(dataset.items.find(item => item.scale_task_id == task_id)){
+		// Don't Update Item if Category is Already Set
+		if(item && !item.category){
 			dataset.items.find(item => item.scale_task_id == task_id).category = category
 			dataset.itemLabeledCount++;
-		} else {
-			//TODO: handle task not found
 		}
 
 		// Write Data to File

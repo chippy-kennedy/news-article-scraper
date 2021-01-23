@@ -10,6 +10,8 @@ var client = scaleapi.ScaleClient(process.env.SCALE_API_KEY);
 
 const requestDatasetCategories = async (dataset) => {
 	//TODO: unhardcode 'dis
+	//GOAL: user input should provide a local path OR URI to cloud storage
+	//	- otherwise prompt should ask
 	dataset = fs.readFileSync('./dataset-examples/example-raw-dataset-25.json')
 	dataset = JSON.parse(dataset)
 
@@ -19,7 +21,8 @@ const requestDatasetCategories = async (dataset) => {
 		return;
 	}
 
-	dataset.items.forEach(async item => {
+
+	await Promise.all(dataset.items.map(async (item) => {
 		let createdTask = await requestItemCategory(item).then(task => {
 			return task;
 		}).catch(error => {
@@ -30,8 +33,8 @@ const requestDatasetCategories = async (dataset) => {
 		//TODO: check for error
 
 		item.scale_task_id = createdTask.task_id
-		dataset.itemSentForLabelingCount++;
-	})
+		++dataset.itemSentForLabelingCount;
+	}))
 
 	// Write Data to File
 	let output = JSON.stringify(dataset);
