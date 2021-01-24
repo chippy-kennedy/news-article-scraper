@@ -4,8 +4,8 @@
   "description": "a simple web scraper to pull, parse, and store news website article metadata",
   "main": "main.js",
   "scripts": {
-    "scrape": "node -e 'require(\"./article-scraper\").scrape()'",
-    "label": "node -e 'require(\"./data-labeler\").requestDatasetCategories()'"
+    "scrape": "node -e 'require(\"./services/article-scraper\").scrape()'",
+    "label": "node -e 'require(\"./services/data-labeler\").requestDatasetCategories()'"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,18 @@
 require('dotenv').config()
 const axios = require('axios').default;
 const cliProgress = require('cli-progress');
-const startUrls = require('./sites.json');
+const startUrls = require('./../sites.json');
 
 const scrape = async () => {
+	let dataset = createDataset({
+		status: 'EMPTY',
+		created_at: time.now,
+		updated_at: time.now,
+	})
+
 	const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.legacy);
-	let dataset = null;
+	let scrapedDataset = null;
+	let actRunId = null;
 
 	// https://docs.apify.com/api/v2#/reference/actors/run-collection/run-actor
 	console.log("Creating new run...")
@@ -35,35 +42,66 @@ const scrape = async () => {
 		}
 	).then((response) => {
 		if(response.statusText == 'Created'){
-			console.log('Run created.')
+			console.log(`Run created. [${response.data.data.id}]`)
+			actRunId = response.data.data.id;
 		}
 	})
 
 	console.log('Scraping articles...')
-	bar1.start(startUrls.length * 20, 0);
+	bar1.start(100, 0);
+	updateDataset(dataset.id, {
+		updated_at: time.now,
+		status: 'PROCESSING',
+		apifyRunId: actRunId
+	})
 
-	while(!dataset){
+	/*
+	 * Check for Last Run Request Queue to Update Progress Bar
+	 */
+	while(!scrapedDataset){
 		//https://docs.apify.com/api/v2?utm_source=app#/reference/actors/last-run-object-and-its-storages
 		let currentRunRequestQueue = await axios.get(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/last/request-queue?token=${process.env.APIFY_API_TOKEN}`)
-		let responseQueue = currentRunRequestQueue.data
+		let requestQueue = currentRunRequestQueue.data
+		let totalRequestCount = requestQueue.data.totalRequestCount;
+		let handledRequestCount = requestQueue.data.handledRequestCount;
 
 		setTimeout(function () {
-			if(responseQueue.data.totalRequestCount > 100){
-				bar1.setTotal(responseQueue.data.totalRequestCount)
+			if(totalRequestCount > 100){
+				bar1.setTotal(totalRequestCount)
 			}
-			bar1.update(responseQueue.data.handledRequestCount)
+			bar1.update(handledRequestCount)
 		}, 3000)
 
-		if(responseQueue.data.totalRequestCount > 10 && responseQueue.data.totalRequestCount == responseQueue.data.handledRequestCount){
-			let currentRunDataset = await axios.get(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/last/dataset?token=${process.env.APIFY_API_TOKEN}&status=SUCCEEDED`)
-			dataset = currentRunDataset.data.data;
+		/*
+		 * If All Requested Articles Have Been Scraped, Request the Dataset
+		 */
+		if(totalRequestCount > 10 && totalRequestCount == handledRequestCount){
+			bar1.setTotal(totalRequestCount)
+			bar1.update(handledRequestCount)
+			let currentRunDataset = await axios.get(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/last/dataset?token=${process.env.APIFY_API_TOKEN}`)
+			let currentRun = currentRunDataset.data.data
+			
+			if(currentRun.actRunId == actRunId){
+				scrapedDataset = currentRunDataset.data.data;
+			}
 		}
 	}
 
 	bar1.stop();
 	console.log('Dataset created');
-	let format = 'csv'
-	let items = await axios.get(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/last/items?format=${format}&token=${process.env.APIFY_API_TOKEN}&status=SUCCEEDED`)
+	let format = 'json'
+	let items = await axios.get(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/last/dataset/items?format=${format}&token=${process.env.APIFY_API_TOKEN}&status=SUCCEEDED`).then((res) => {
+		return res.data;
+	}).catch(err => {
+		console.log(err);
+		return null;
+	})
+
+	updateDataset(dataset.id, {
+		updated_at: time.now,
+		items: items,
+		itemCount; items.length
+	})
 }
 
 module.exports = { scrape }
