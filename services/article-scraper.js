@@ -6,8 +6,6 @@ const startUrls = require('./../sites.json');
 const scrape = async () => {
 	let dataset = createDataset({
 		status: 'EMPTY',
-		created_at: time.now,
-		updated_at: time.now,
 	})
 
 	const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.legacy);
@@ -50,7 +48,6 @@ const scrape = async () => {
 	console.log('Scraping articles...')
 	bar1.start(100, 0);
 	updateDataset(dataset.id, {
-		updated_at: time.now,
 		status: 'PROCESSING',
 		apifyRunId: actRunId
 	})

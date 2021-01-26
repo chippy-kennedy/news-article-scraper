@@ -1,6 +1,5 @@
 # 📰 News Site Article Scraper
-A web scraper to pull basic meta information from new website articles. Creates raw datasets of article content from news websites, stores datasets, and processes data into (opionated) training datasets, useful for ML applications.
-Uses clever APIs (apify + scale) and cloud storage (digital ocean)
+A CLI set of services to create, clean, label, and manage datasets. Useful for creating machine learning-ready datasets. Uses Apify web scraper to pull in data; Scale AI to categorize data; and Digital Ocean to store and manage datasets;
 
 **Product Owners**
 - [Chip Kennedy](https://github.com/chippy-kennedy) | chip@codesleep.run
@@ -20,6 +19,7 @@ This list is also useful, but was not built to be objective or unbiased.
 
 **Copyrighted Material**
 The article scraper service pulls material from news websites. This content is often copyrighted and you should check with an individual website's terms and policies before republishing copyrighted material anywhere.
+This application's ISC lisense does *not* apply to content scraped from the internet.
 
 ## Use Cases
 - Create an ML training dataset of labeled news websites articles
@@ -38,7 +38,7 @@ The scraper is made up of three seperate services and a web server to gather dat
 
 #### 🪛  Article Scraper Service
 The article scraper service uses a pre-made actor in the apify cloud marketplace. If you're new to apify, start with [their docs](https://docs.apify.com/). Once you're familiar, you can read up on the [Smart Article Extractor actor](https://apify.com/lukaskrivka/article-extractor-smart) that
-powers the service.
+powers the service. 
 **Input**
 - list of news websites to crawl (*required*)
 - actor options (*optional*)
@@ -47,13 +47,13 @@ powers the service.
 - raw dataset (csv, unless otherwise specified) of scraped news websites
 
 #### ☁️  Dataset Storage Service
-The dataset storage service packages, labels, and stores datasets in the cloud.
+The dataset storage service packages, labels, and stores datasets in the cloud. 
 **Input**
 - raw dataset
 
 #### 🏷 Dataset Labeling Service
 The dataset labeling service uses the [scale api](https://docs.scale.com/reference) to turn raw datasets into useful ML training data. It specifically labels scraped articles with topics and subtopics defined in this service.
-It also uses a simple webserver to handle individual task callbacks from scale's service.
+It also uses a simple webserver to handle individual task callbacks from scale's service. 
 **Input**
 - raw dataset
 
