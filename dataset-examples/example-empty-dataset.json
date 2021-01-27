@@ -1,16 +1,18 @@
 {
 	"status": "EMPTY",
-	"created_at": "2021-01-22T17:45:46.568Z",
-	"updated_at": "2021-01-22T17:45:46.568Z",
-	"id": 1,
+	"createdAt": "2021-01-22T17:45:46.568Z",
+	"updatedAt": "2021-01-22T17:45:46.568Z",
+	"id": 2,
 	"name": "example-empty-dataset",
+	"size": 0,
 	"itemType": "articles",
 	"itemCount": 0,
 	"itemCleanedCount": 0,
 	"itemSentForLabelingCount": 0,
 	"itemLabeledCount": 0,
-	"spaceURI": null,
+	"spacesUrl": null,
+	"spacesKey": null,
+	"apifyRunId":null,
 	"scaleProjectName": null,
-	"apifyRun": null,
 	"items": []
 }

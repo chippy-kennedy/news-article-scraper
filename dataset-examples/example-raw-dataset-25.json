@@ -1,7 +1,7 @@
 {
 	"status": "RAW",
-	"created_at": "2021-01-22T17:45:46.568Z",
-	"updated_at": "2021-01-22T17:45:46.568Z",
+	"createdAt": "2021-01-22T17:45:46.568Z",
+	"updatedAt": "2021-01-22T17:45:46.568Z",
 	"id": 1,
 	"name": "example-raw-25-dataset",
 	"itemType": "articles",
@@ -9,9 +9,12 @@
 	"itemCleanedCount": 0,
 	"itemSentForLabelingCount": 0,
 	"itemLabeledCount": 0,
-	"spaceURI": null,
+	"spacesKey": null,
+	"spacesUrl": "https://politrack-datasets.nyc3.digitaloceanspaces.com/f16c097f-aa66-470a-a8b2-b2dc91d823ff",
+	"apifyRunId":"z7QUWeS8CDJG83pNc",
 	"scaleProjectName": null,
-	"apifyRun": null,
+	"format": "json",
+	"size": 345,
 	"items": [
 		{
 			"date": "2021-01-20T16:49:23.000Z",

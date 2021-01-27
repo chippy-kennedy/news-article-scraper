@@ -8,12 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spaceUrl: {
+			itemCount: {
+				type: Sequelize.INTEGER
+			},
+			itemType: {
+				type: Sequelize.STRING,
+			},
+      spacesKey: {
+        type: Sequelize.STRING,
+				unique: true
+      },
+      spacesUrl: {
         type: Sequelize.STRING
       },
       name: {
         type: Sequelize.STRING
       },
+			size: {
+				type: Sequelize.STRING
+			},
+			format: {
+				type: Sequelize.STRING
+			},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

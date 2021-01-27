@@ -14,8 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Dataset.init({
-    spaceUrl: DataTypes.STRING,
-    name: DataTypes.STRING
+		itemCount: DataTypes.INTEGER,
+		itemType: DataTypes.STRING,
+		spacesKey: DataTypes.STRING,
+    spacesUrl: DataTypes.STRING,
+    name: DataTypes.STRING,
+		format: DataTypes.STRING,
+		size: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Dataset',

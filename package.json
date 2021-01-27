@@ -4,8 +4,9 @@
   "description": "a simple web scraper to pull, parse, and store news website article metadata",
   "main": "main.js",
   "scripts": {
-    "scrape": "node -e 'require(\"./services/article-scraper\").scrape()'",
-    "label": "node -e 'require(\"./services/data-labeler\").requestDatasetCategories()'"
+    "scrape:existing": "node -e 'require(\"./services/scraper\").scrapeToExistingDataset()'",
+    "scrape:new": "node -e 'require(\"./services/scraper\").scrapeToNewDataset()'",
+    "label": "node -e 'require(\"./services/labeler\").requestDatasetCategories()'"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,11 @@
   "homepage": "https://github.com/chippy-kennedy/news-article-scraper#readme",
   "dependencies": {
     "apify": "^0.22.4",
+    "aws-sdk": "^2.831.0",
     "axios": "^0.21.1",
     "cli-progress": "^3.8.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "fs": "0.0.1-security",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "prompts": "^2.4.0",

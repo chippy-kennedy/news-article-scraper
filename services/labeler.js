@@ -2,25 +2,18 @@
 
 require('dotenv').config()
 const util = require('util');
-const fs = require('fs');
-const axios = require('axios').default;
+const prompts = require('prompts');
 var scaleapi = require('scaleapi');
-const choices = require('./categories.json');
+const choices = require('./../categories.json');
+const { Dataset } = require('./../db/models')
 var client = scaleapi.ScaleClient(process.env.SCALE_API_KEY);
+const { getDataset, updateDataset } = require('./dataset')
 
-const requestDatasetCategories = async (dataset) => {
-	//TODO: unhardcode 'dis
-	//GOAL: user input should provide a local path OR URI to cloud storage
-	//	- otherwise prompt should ask
-	dataset = fs.readFileSync('./dataset-examples/example-raw-dataset-25.json')
-	dataset = JSON.parse(dataset)
-
-	//TODO: validate dataset (need util)
-	if(!dataset){
-		console.log("Error: No dataset provided")
-		return;
-	}
-
+const requestDatasetCategories = async (datasetKey) => {
+	/*
+	 * Pull In Dataset from Cloud
+	*/
+	let dataset = await getDataset(datasetKey)
 
 	await Promise.all(dataset.items.map(async (item) => {
 		let createdTask = await requestItemCategory(item).then(task => {
@@ -36,9 +29,11 @@ const requestDatasetCategories = async (dataset) => {
 		++dataset.itemSentForLabelingCount;
 	}))
 
-	// Write Data to File
-	let output = JSON.stringify(dataset);
-	fs.writeFileSync('./dataset-examples/example-raw-dataset-25.json', output);
+	await updateDataset(dataset.id, {
+		status: 'PROCESSING',
+		itemSentForLabelingCount: dataset.itemSentForLabelingCount,
+		items: dataset.items
+	})
 }
 
 const requestItemCategory = (item) => {

@@ -7,7 +7,7 @@ const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_US
   dialect: 'mysql',
   operatorsAliases: false,
   //logging: (config.environment === 'development' ? console.log : false),
-	logging: console.log,
+	logging: false,
   pool: {
     max: 5,
     min: 0,

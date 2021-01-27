@@ -1,5 +1,5 @@
 # 📰 News Site Article Scraper
-A CLI set of services to create, clean, label, and manage datasets. Useful for creating machine learning-ready datasets. Uses Apify web scraper to pull in data; Scale AI to categorize data; and Digital Ocean to store and manage datasets;
+A CLI set of services to create, clean, label, and manage datasets in the cloud. Useful for creating machine learning-ready datasets. Uses Apify web scraper to pull in data; Scale AI to categorize data; and Digital Ocean to store and manage datasets;
 
 **Product Owners**
 - [Chip Kennedy](https://github.com/chippy-kennedy) | chip@codesleep.run
@@ -27,33 +27,47 @@ This application's ISC lisense does *not* apply to content scraped from the inte
 ## Project Breakdown
 ### Prerequisites
 - Node.js
+- MySQL + Sequelize (simple database + ORM)
 - Apify API Key (raw dataset creation // web scraping)
 - Scale API Key (training dataset creation // ML pre-labeling + human review)
+- AWS S3 or DigitalOcean Spaces (cloud storage)
 
 ### Costs
 Note that both Apify and Scale AI have both free tiers and paid subscriptions. Create accounts with those services to learn more.
 
 ### How it Works
-The scraper is made up of three seperate services and a web server to gather data (web scraping via apify), store data (in a cloud storage space), and label the data (via scale AI).
+The scraper is made up of seperate services and a web server to gather data (web scraping via apify), store data (in a cloud storage space), and label the data (via scale AI).
 
-#### 🪛  Article Scraper Service
-The article scraper service uses a pre-made actor in the apify cloud marketplace. If you're new to apify, start with [their docs](https://docs.apify.com/). Once you're familiar, you can read up on the [Smart Article Extractor actor](https://apify.com/lukaskrivka/article-extractor-smart) that
+#### 🪛  Scraper Service
+Scrapes web articles. Uses a pre-made actor in the apify cloud marketplace. If you're new to apify, start with [their docs](https://docs.apify.com/). Once you're familiar, you can read up on the [Smart Article Extractor actor](https://apify.com/lukaskrivka/article-extractor-smart) that
 powers the service. 
+
+##### Scrape Data to New Dataset
+```
+npm run scrape:new
+```
 **Input**
-- list of news websites to crawl (*required*)
+- list of news websites to crawl (*required*). default list is located in `sites.json` 
 - actor options (*optional*)
 
 **Output**
-- raw dataset (csv, unless otherwise specified) of scraped news websites
+- raw dataset (json, unless otherwise specified) of scraped news websites stored in DO Space
 
-#### ☁️  Dataset Storage Service
-The dataset storage service packages, labels, and stores datasets in the cloud. 
-**Input**
-- raw dataset
+#### 📊 Dataset Service
+Creates, retrieves, and updates datasets. Each dataset is stored as a cloud object (with metadata and items) and as an object in the database (with metadata only). Both objects share a UUID as their ID.
+
+#### ☁️ S3 Service
+Authenticates, uploads to, and downloads from cloud storage bucket. This project uses a digital ocean space, which is interchangable with an Amazon S3 bucket.
 
 #### 🏷 Dataset Labeling Service
-The dataset labeling service uses the [scale api](https://docs.scale.com/reference) to turn raw datasets into useful ML training data. It specifically labels scraped articles with topics and subtopics defined in this service.
+Requests labels for dataset items. Uses the [scale api](https://docs.scale.com/reference) to turn raw datasets into useful ML training data. It specifically labels scraped articles with topics and subtopics defined in this service.
 It also uses a simple webserver to handle individual task callbacks from scale's service. 
+
+##### Label Entire Dataset
+*Note: requests to label dataset items can only be completed if the webserver is running to acknowledge successes
+```
+npm run label
+```
 **Input**
 - raw dataset
 
