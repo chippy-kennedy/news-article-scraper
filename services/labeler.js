@@ -13,7 +13,11 @@ const requestDatasetCategories = async (datasetKey) => {
 	/*
 	 * Pull In Dataset from Cloud
 	*/
-	let dataset = await getDataset(datasetKey)
+	let dataset = await getDataset(datasetKey).catch(err => {
+		console.log(err)
+		process.exit();
+		return;
+	})
 
 	await Promise.all(dataset.items.map(async (item) => {
 		let createdTask = await requestItemCategory(item, datasetKey).then(task => {

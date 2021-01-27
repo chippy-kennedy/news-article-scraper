@@ -1,10 +1,9 @@
 require('dotenv').config()
 const prompts = require('prompts');
 const uuid = require('uuid').v4;
-//const sequelize = require('./../db_connection')
 const { Dataset } = require('./../db/models')
 const { getObject, uploadObject } = require('./s3')
-const { isEmptyObject } = require('./../utils')
+const { isEmptyObject, isEmptyArray } = require('./../utils')
 
 const getDataset = async (key) => {
 	/*
@@ -13,6 +12,11 @@ const getDataset = async (key) => {
 	 */
 	if(!key || typeof(key) == 'undefined'){
 		let datasets = await Dataset.findAll()
+
+		if(isEmptyArray(datasets)){
+			throw 'No datasets found: Create a new dataset or sync datasets with cloud storage to continue'
+			return null;
+		}
 		let choices = datasets.map(d => {
 			return({
 				title: d.name,
@@ -88,8 +92,9 @@ const createDataset = async (options={}) => {
 const updateDataset = async (key, dataset={}) => {
 	console.log('Updating dataset...')
 	delete dataset.key;
+	dataset.updatedAt = Date.now()
 
-	//TODO: robust validation
+	//TODO: more robust validation and sanitization
 	if(isEmptyObject(dataset)){
 		console.log('No updates provided.')
 		return;
@@ -141,4 +146,17 @@ const updateDataset = async (key, dataset={}) => {
 	return localDataset;
 }
 
-module.exports = { createDataset, updateDataset, getDataset }
+const sync = async () => {
+	let localDatasets = await Dataset.findAll()
+	//list objects in cloud storage
+	//match local and cloud
+	//for each match:
+	//	- assure that data matches
+	//	- if it does not, force update of whichever was most recently updated
+	//for local datasets without cloudStorage
+	//	- create cloud storage object
+	//for cloud datasets without a local dataset
+	//	- create local dataset
+}
+
+module.exports = { createDataset, updateDataset, getDataset, sync }

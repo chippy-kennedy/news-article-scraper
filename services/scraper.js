@@ -122,7 +122,7 @@ const scrapeToNewDataset = async () => {
 		updateDataset(dataset.key, {
 			status: 'RAW',
 			items: items,
-			item_count: items.length
+			itemCount: items.length
 		})
 	}
 }

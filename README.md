@@ -84,3 +84,14 @@ It has a `status`, which can be:
 - `RAW`, meaning the dataset has items, but has had no cleaning or labeling done to it
 - `CLEANED`, meaning the dataset has been cleaned (manual process)
 - `LABELED`, meaning the dataset is labeled
+
+## Project Development
+- installing prerequisites
+- initializing database
+- connecting to Apify
+- connecting to cloud storage
+- connecting to Scale AI
+
+### Local Development
+- ngrok
+- running server locally

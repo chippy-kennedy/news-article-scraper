@@ -4,6 +4,9 @@
   "description": "a simple web scraper to pull, parse, and store news website article metadata",
   "main": "main.js",
   "scripts": {
+		"datasets:sync": "echo 'script not defined yet'",
+		"datasets:list": "echo 'script not defined yet'",
+		"datasets:create": "echo 'script not defined yet'",
     "scrape:existing": "node -e 'require(\"./services/scraper\").scrapeToExistingDataset()'",
     "scrape:new": "node -e 'require(\"./services/scraper\").scrapeToNewDataset()'",
     "label": "node -e 'require(\"./services/labeler\").requestDatasetCategories()'"

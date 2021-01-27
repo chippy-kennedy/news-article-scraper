@@ -20,4 +20,8 @@ const isEmptyObject = (obj) => {
 	return Object.keys(obj).length === 0 && obj.constructor === Object
 }
 
-module.exports = { beforeQuit, isEmptyObject }
+const isEmptyArray = (arr) => {
+	return arr === undefined || arr.length == 0
+}
+
+module.exports = { beforeQuit, isEmptyObject, isEmptyArray }
