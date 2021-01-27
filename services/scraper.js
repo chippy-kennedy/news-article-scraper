@@ -63,9 +63,9 @@ const scrapeToNewDataset = async () => {
 	})
 
 	if(!failedRun){
-		await updateDataset(dataset.id, {
+		await updateDataset(dataset.key, {
 			status: 'PROCESSING',
-			apify_run_id: actRunId
+			apifyRunId: actRunId
 		})
 		console.log('Scraping articles...')
 		bar1.start(100, 0);
@@ -119,7 +119,7 @@ const scrapeToNewDataset = async () => {
 			return null;
 		})
 
-		updateDataset(dataset.id, {
+		updateDataset(dataset.key, {
 			status: 'RAW',
 			items: items,
 			item_count: items.length
