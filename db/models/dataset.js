@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Dataset.init({
 		key: {
-			type: Sequelize.UUID,
+			type: DataTypes.UUID,
 			allowNull: false,
 			primaryKey: true,
-			defaultValue: Sequelize.UUIDV4
+			defaultValue: sequelize.UUIDV4
 		},
 		itemCount: DataTypes.INTEGER,
 		itemType: DataTypes.STRING,

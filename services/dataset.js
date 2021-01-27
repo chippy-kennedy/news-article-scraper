@@ -11,13 +11,13 @@ const getDataset = async (key) => {
 	 * If target dataset id is not specified,
 	 * ask the user to select dataset via CLI
 	 */
-	if(!key){
+	if(!key || typeof(key) == 'undefined'){
 		let datasets = await Dataset.findAll()
 		let choices = datasets.map(d => {
 			return({
 				title: d.name,
-				description: `${d.item_count} articles // ${d.spaces_url}`, 
-				value: d.spaces_key
+				description: `${d.itemCount} articles // ${d.size} b`, 
+				value: d.key
 			})
 		})
 
@@ -74,7 +74,7 @@ const createDataset = async (options={}) => {
 
 	let localDataset = await Dataset.create({
 		key: dataset.key,
-		itemCount: dataset.item_count,
+		itemCount: dataset.itemCount,
 		spacesUrl: url,
 		format: 'json',
 		name: dataset.name,

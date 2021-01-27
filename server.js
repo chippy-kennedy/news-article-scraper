@@ -1,13 +1,13 @@
 require('dotenv').config({path: __dirname + '/.env'})
 const express = require('express')
 const app = express()
+const { getDataset, updateDataset } = require('./services/dataset')
 
 app.use(express.json());
 
-app.post('/scale-task-completed', (req, res) => {
-	let dataset_id = req.body.task.metadata.dataset_id
-	let dataset = readFileSync('./dataset-examples/example-raw-dataset-25.json')
-	dataset = JSON.parse(dataset)
+app.post('/scale-task-completed', async (req, res) => {
+	let key = req.body.task.metadata.dataset_key
+	let dataset = await getDataset(key)
 
 	if(dataset){
 		let task_id = req.body.task.task_id
@@ -20,9 +20,10 @@ app.post('/scale-task-completed', (req, res) => {
 			dataset.itemLabeledCount++;
 		}
 
-		// Write Data to File
-		let output = JSON.stringify(dataset);
-		writeFileSync('./dataset-examples/example-raw-dataset-25.json', output);
+		await updateDataset(dataset.key, {
+			itemLabeledCount: dataset.itemLabledCount,
+			items: dataset.items
+		})
 	}
 
 	res.writeHead(200, { 'Content-Type': 'application/json' });
