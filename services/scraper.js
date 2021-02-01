@@ -2,10 +2,12 @@ require('dotenv').config()
 const axios = require('axios').default;
 const cliProgress = require('cli-progress');
 const startUrls = require('./../sites.json');
-const { createDataset, updateDataset } = require('./dataset')
+const { createDataset, syncDataset, getDataset, updateDataset } = require('./dataset')
 const { beforeQuit } = require('./../utils')
 
-const scrapeToNewDataset = async () => {
+const scrape = async (datasetKey) => {
+	let key = datasetKey || process.env['npm_config_key']
+
 	const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.legacy);
 	let scrapedDataset = null;
 	let actRunId = null;
@@ -13,18 +15,21 @@ const scrapeToNewDataset = async () => {
 
 	/*
 	 * Util For Passing a Callback to run before process quits
+	 * API Reference: https://docs.apify.com/api/v2?utm_source=app#/reference/actors/abort-run/abort-run
 	 */
 	beforeQuit(async function() {
 		console.log('Aborting actor run...')
-		//https://docs.apify.com/api/v2?utm_source=app#/reference/actors/abort-run/abort-run
 		let abortRunRequest = await axios.post(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs/${actRunId}/abort?token=${process.env.APIFY_API_TOKEN}`)
+		console.log('Scrape run aborted. Dataset not updated. To view data collected, view the run on Apify dashboard')
 	})
 
-	let dataset = await createDataset({
-		status: 'EMPTY',
-	})
+	//TODO: business logic around adding data to existing dataset - do we deduplicate?
+	let dataset = await getDataset(key)
 
-	// https://docs.apify.com/api/v2#/reference/actors/run-collection/run-actor
+	/*
+	 * Initiate Apify Actor Scraper
+	 * API Reference: https://docs.apify.com/api/v2#/reference/actors/run-collection/run-actor
+	 */
 	console.log("Creating new scraper actor run...")
 	let initiateRunRequest = await axios.post(`https://api.apify.com/v2/acts/lukaskrivka~article-extractor-smart/runs?token=${process.env.APIFY_API_TOKEN}`,
 		{
@@ -52,7 +57,7 @@ const scrapeToNewDataset = async () => {
 		}
 	).then((response) => {
 		if(response.statusText == 'Created'){
-			console.log(`Run started. [${response.data.data.id}]`)
+			console.log(`\u2714 Run started. [${response.data.data.id}]\n`)
 			actRunId = response.data.data.id;
 		}
 		return response;
@@ -107,7 +112,7 @@ const scrapeToNewDataset = async () => {
 		}
 
 		bar1.stop();
-		console.log(`Scraping completed. [${scrapedDataset.itemCount} items]`);
+		console.log(`\u2714 Scraping completed. [${scrapedDataset.itemCount} items]\n`);
 	}
 
 	if(!failedRun){
@@ -119,19 +124,14 @@ const scrapeToNewDataset = async () => {
 			return null;
 		})
 
-		updateDataset(dataset.key, {
+		await updateDataset(dataset.key, {
 			status: 'RAW',
 			items: items,
 			itemCount: items.length
 		})
+
+		await syncDataset(dataset.key)
 	}
 }
 
-const scrapeToExistingDataset = async () => {
-	//fetch list of datasets
-	//ask user to select dataset
-	//run scraper
-	//update dataset via dataset service
-}
-
-module.exports = { scrapeToNewDataset, scrapeToExistingDataset }
+module.exports = { scrape }

@@ -4,11 +4,11 @@
   "description": "a simple web scraper to pull, parse, and store news website article metadata",
   "main": "main.js",
   "scripts": {
-		"datasets:sync": "echo 'script not defined yet'",
-		"datasets:list": "echo 'script not defined yet'",
-		"datasets:create": "echo 'script not defined yet'",
-    "scrape:existing": "node -e 'require(\"./services/scraper\").scrapeToExistingDataset()'",
-    "scrape:new": "node -e 'require(\"./services/scraper\").scrapeToNewDataset()'",
+    "check-env": "node -e 'console.log(process.env)' | grep npm",
+    "list": "node -e 'require(\"./services/dataset\").listDatasets()'",
+    "create": "node -e 'require(\"./services/dataset\").createDataset()'",
+    "scrape": "node -e 'require(\"./services/scraper\").scrape()'",
+    "sync": "node -e 'require(\"./services/dataset\").syncDataset()'",
     "label": "node -e 'require(\"./services/labeler\").requestDatasetCategories()'"
   },
   "repository": {
@@ -35,6 +35,8 @@
     "aws-sdk": "^2.831.0",
     "axios": "^0.21.1",
     "cli-progress": "^3.8.2",
+    "console-table-printer": "^2.7.5",
+    "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
