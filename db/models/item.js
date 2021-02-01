@@ -3,32 +3,30 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Dataset extends Model {
+  class Item extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-			this.hasMany(models.Item, {foreignKey: 'datasetKey'});
+			this.belongsTo(models.Dataset, {foreignKey: 'datasetKey'})
     }
   };
-  Dataset.init({
+  Item.init({
 		key: {
 			type: DataTypes.UUID,
 			allowNull: false,
 			primaryKey: true,
 			defaultValue: sequelize.UUIDV4
 		},
-		itemCount: DataTypes.INTEGER,
-		itemType: DataTypes.STRING,
-    spacesUrl: DataTypes.STRING,
-    name: DataTypes.STRING,
-		format: DataTypes.STRING,
-		size: DataTypes.STRING
+    scaleTaskId: DataTypes.STRING,
+		data: DataTypes.JSON,
+		synced: DataTypes.BOOLEAN,
+		datasetKey: DataTypes.UUID,
   }, {
     sequelize,
-    modelName: 'Dataset',
+    modelName: 'Item',
   });
-  return Dataset;
+  return Item;
 };

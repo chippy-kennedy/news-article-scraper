@@ -1,30 +1,24 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Datasets', {
+    await queryInterface.createTable('Items', {
       key: {
 				type: Sequelize.UUID,
 				allowNull: false,
 				primaryKey: true,
 				defaultValue: Sequelize.UUIDV4
       },
-			itemCount: {
-				type: Sequelize.INTEGER
+			datasetKey: {
+        type: Sequelize.UUID
 			},
-			itemType: {
-				type: Sequelize.STRING,
-			},
-      spacesUrl: {
+      scaleTaskId: {
         type: Sequelize.STRING
       },
-      name: {
-        type: Sequelize.STRING
-      },
-			size: {
-				type: Sequelize.STRING
+			synced: {
+        type: Sequelize.BOOLEAN
 			},
-			format: {
-				type: Sequelize.STRING
+			data: {
+				type: Sequelize.JSON
 			},
       createdAt: {
         allowNull: false,
@@ -37,6 +31,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Datasets');
+    await queryInterface.dropTable('Items');
   }
 };
