@@ -2,23 +2,31 @@
 
 require('dotenv').config()
 const util = require('util');
-const prompts = require('prompts');
 var scaleapi = require('scaleapi');
 const choices = require('./../categories.json');
 var client = scaleapi.ScaleClient(process.env.SCALE_API_KEY);
-const { getDataset, updateDataset } = require('./dataset')
+const { updateDataset } = require('./dataset')
+const { getObject } = require('./s3')
 
 const requestDatasetCategories = async (datasetKey) => {
 	console.log('Requesting data labels...')
 	let key = datasetKey || process.env['npm_config_key']
+
+	if(!key){
+		console.log("No datasetKey provided.")
+		return;
+	}
+
 	/*
 	 * Pull In Dataset from Cloud
 	*/
-	let cloudDataset = await getDataset(key).catch(err => {
-		throw err
-		process.exit();
+	let cloudDataset = await getObject(key)
+	cloudDataset.itemSentForLabelingCount = 0
+
+	if(!cloudDataset){
+		console.log("Dataset not found")
 		return;
-	})
+	}
 
 	let tasks = await Promise.all(cloudDataset.items.map(async (item) => {
 		let createdTask = await requestItemCategory(item, key).then(task => {
@@ -30,14 +38,16 @@ const requestDatasetCategories = async (datasetKey) => {
 
 		if(createdTask){
 			item.scaleTaskId = createdTask.task_id
-			++dataset.itemSentForLabelingCount;
+			++cloudDataset.itemSentForLabelingCount;
 		}
 	}))
 
+	console.log(`\u2714 ${cloudDataset.itemSentForLabelingCount} Labels Requested.\n`)
+
 	await updateDataset(key, {
 		status: 'PROCESSING',
-		itemSentForLabelingCount: dataset.itemSentForLabelingCount,
-		items: dataset.items
+		itemSentForLabelingCount: cloudDataset.itemSentForLabelingCount,
+		items: cloudDataset.items
 	})
 }
 

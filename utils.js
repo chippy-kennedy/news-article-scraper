@@ -24,4 +24,13 @@ const isEmptyArray = (arr) => {
 	return arr === undefined || arr.length == 0
 }
 
-module.exports = { beforeQuit, isEmptyObject, isEmptyArray }
+const isJSON = (str) => {
+	try {
+		JSON.parse(str)
+	} catch(e) {
+		return false;
+	}
+	return true;
+}
+
+module.exports = { beforeQuit, isEmptyObject, isEmptyArray, isJSON }

@@ -8,7 +8,10 @@ const { printTable } = require('console-table-printer');
 var dayjs = require('dayjs')
 
 const synced = (dataset) => {
-	return !dataset.items || isEmptyArray(dataset.items) || !dataset.items.some(item => !item.synced)
+	let d = dataset.get()
+	let items = dataset.Items.map(i => i.get())
+
+	return !items || isEmptyArray(items) || !items.some(item => !item.synced)
 }
 
 const listDatasets = async (key) => {
@@ -44,7 +47,7 @@ const getDataset = async (key) => {
 		let choices = datasets.map(d => {
 			return({
 				title: d.name,
-				description: `${d.itemCount} ${d.itemType} // ${d.size} b`, 
+				description: `${d.itemCount} ${d.itemType} // ${d.size}`, 
 				value: d.key
 			})
 		})
@@ -152,7 +155,7 @@ const updateDataset = async (key, dataset={}) => {
 		let choices = datasets.map(d => {
 			return({
 				title: d.name,
-				description: `${d.itemCount} ${d.itemType} // ${d.size} b`, 
+				description: `${d.itemCount} ${d.itemType} // ${d.size}`, 
 				value: d.key
 			})
 		})
@@ -231,15 +234,15 @@ const syncDataset = async (datasetKey) => {
 		let item = Item.get()
 
 		if(!item.synced){
-			let data = item.data;
+			let data = JSON.parse(item.data);
 
 			if(data) {
 				let idx = cloudDataset.items.findIndex(el => el.key == item.key)
 
 				if(idx >= 0) {
-					cloudDataset.items[idx] = {...cloudDataset.items[idx], ...data, item.key}
+					cloudDataset.items[idx] = {...cloudDataset.items[idx], ...data, key: item.key}
 				} else {
-					cloudDataset.items.push({...data, item.key})
+					cloudDataset.items.push({...data, key: item.key})
 				}
 
 				Item.synced = true
