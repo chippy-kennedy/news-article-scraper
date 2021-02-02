@@ -5,22 +5,23 @@ const util = require('util');
 const prompts = require('prompts');
 var scaleapi = require('scaleapi');
 const choices = require('./../categories.json');
-const { Dataset } = require('./../db/models')
 var client = scaleapi.ScaleClient(process.env.SCALE_API_KEY);
 const { getDataset, updateDataset } = require('./dataset')
 
 const requestDatasetCategories = async (datasetKey) => {
+	console.log('Requesting data labels...')
+	let key = datasetKey || process.env['npm_config_key']
 	/*
 	 * Pull In Dataset from Cloud
 	*/
-	let dataset = await getDataset(datasetKey).catch(err => {
-		console.log(err)
+	let cloudDataset = await getDataset(key).catch(err => {
+		throw err
 		process.exit();
 		return;
 	})
 
-	await Promise.all(dataset.items.map(async (item) => {
-		let createdTask = await requestItemCategory(item, datasetKey).then(task => {
+	let tasks = await Promise.all(cloudDataset.items.map(async (item) => {
+		let createdTask = await requestItemCategory(item, key).then(task => {
 			return task;
 		}).catch(error => {
 			console.log(error)
@@ -28,12 +29,12 @@ const requestDatasetCategories = async (datasetKey) => {
 		});
 
 		if(createdTask){
-			item.scale_task_id = createdTask.task_id
+			item.scaleTaskId = createdTask.task_id
 			++dataset.itemSentForLabelingCount;
 		}
 	}))
 
-	await updateDataset(dataset.key, {
+	await updateDataset(key, {
 		status: 'PROCESSING',
 		itemSentForLabelingCount: dataset.itemSentForLabelingCount,
 		items: dataset.items

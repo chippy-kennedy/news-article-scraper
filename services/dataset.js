@@ -133,6 +133,7 @@ const createDataset = async (options={}) => {
 
 const updateDataset = async (key, dataset={}) => {
 	console.log('Updating dataset...')
+	if(!key && dataset.key) key = dataset.key
 	delete dataset.key;
 	dataset.updatedAt = Date.now()
 
@@ -236,9 +237,9 @@ const syncDataset = async (datasetKey) => {
 				let idx = cloudDataset.items.findIndex(el => el.key == item.key)
 
 				if(idx >= 0) {
-					cloudDataset.items[idx] = {...cloudDataset.items[idx], ...data}
+					cloudDataset.items[idx] = {...cloudDataset.items[idx], ...data, item.key}
 				} else {
-					cloudDataset.items.push(data)
+					cloudDataset.items.push({...data, item.key})
 				}
 
 				Item.synced = true
